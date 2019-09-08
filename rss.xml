@@ -1,4 +1,27 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[work and nonwork]]></title><description><![CDATA[Musings on work, nonwork and gardening.]]></description><link>https://gatsby-starter-blog-demo.netlify.com</link><generator>GatsbyJS</generator><lastBuildDate>Sun, 08 Sep 2019 17:44:59 GMT</lastBuildDate><item><title><![CDATA[New Stack, New Blog, Preserved Eggs]]></title><description><![CDATA[I’ve put together a new blog with Gatsby,
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[work and nonwork]]></title><description><![CDATA[Musings on work, nonwork and gardening.]]></description><link>https://gatsby-starter-blog-demo.netlify.com</link><generator>GatsbyJS</generator><lastBuildDate>Sun, 08 Sep 2019 18:26:36 GMT</lastBuildDate><item><title><![CDATA[Enabling Unfree Packages on NixOS]]></title><description><![CDATA[Similar to Linux distributions such as Debian and Ubuntu,
+it is necessary on NixOS to opt-in to the use of unfree
+(free as in beer, but not…]]></description><link>https://gatsby-starter-blog-demo.netlify.com/enable-unfree-on-nixos/</link><guid isPermaLink="false">https://gatsby-starter-blog-demo.netlify.com/enable-unfree-on-nixos/</guid><pubDate>Sun, 08 Sep 2019 13:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Similar to Linux distributions such as Debian and Ubuntu,
+it is necessary on &lt;a href=&quot;https://nixos.org/&quot;&gt;NixOS&lt;/a&gt; to opt-in to the use of unfree
+(free as in beer, but not “libre”) software before said
+software can be installed via the package manager. As this opt-in is not
+currently part of the OS install process, the user must make a few configuration
+changes after installing the OS to have access to non-libre software such as
+Slack and Spotify.&lt;/p&gt;
+&lt;p&gt;To allow users to install unfree packages into the user environment
+using the &lt;code class=&quot;language-text&quot;&gt;nix-env&lt;/code&gt; command, &lt;code class=&quot;language-text&quot;&gt;allowUnfree = true;&lt;/code&gt; must be added to
+&lt;code class=&quot;language-text&quot;&gt;~/.config/nixpkgs/config.nix&lt;/code&gt; as it is below.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;$ &lt;span class=&quot;token builtin class-name&quot;&gt;cd&lt;/span&gt; ~/.config/nixpkgs
+$ &lt;span class=&quot;token function&quot;&gt;cat&lt;/span&gt; config.nix
+
+&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token comment&quot;&gt;# Enable searching for and installing unfree packages&lt;/span&gt;
+  allowUnfree &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token boolean&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;To allow for unfree packages to be installed into the global environment
+(by for example appending them to &lt;code class=&quot;language-text&quot;&gt;/etc/nixos/configuration.nix&lt;/code&gt;) a user with
+root privileges must add the following to &lt;code class=&quot;language-text&quot;&gt;/etc/nixos/configuration.nix&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;# Enable unfree packages
+nixpkgs.config.allowUnfree = true;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content:encoded></item><item><title><![CDATA[New Stack, New Blog, Preserved Eggs]]></title><description><![CDATA[I’ve put together a new blog with Gatsby,
 which I’m quite happy with. I haven’t been able to spend as much time with
 React as I’d like until…]]></description><link>https://gatsby-starter-blog-demo.netlify.com/new-blog/</link><guid isPermaLink="false">https://gatsby-starter-blog-demo.netlify.com/new-blog/</guid><pubDate>Sun, 08 Sep 2019 11:00:00 GMT</pubDate><content:encoded>&lt;p&gt;I’ve put together a new blog with &lt;a href=&quot;https://www.gatsbyjs.org/&quot;&gt;Gatsby&lt;/a&gt;,
 which I’m quite happy with. I haven’t been able to spend as much time with
