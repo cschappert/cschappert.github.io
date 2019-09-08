@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[work and nonwork]]></title><description><![CDATA[Musings on work, nonwork and gardening.]]></description><link>https://gatsby-starter-blog-demo.netlify.com</link><generator>GatsbyJS</generator><lastBuildDate>Sun, 08 Sep 2019 17:34:58 GMT</lastBuildDate><item><title><![CDATA[New Site Generator, New Blog, Preserved Eggs]]></title><description><![CDATA[I’ve put together a new blog with Gatsby,
+which I’m quite happy with. I haven’t been able to spend as much time with
+React as I’d like until…]]></description><link>https://gatsby-starter-blog-demo.netlify.com/new-blog/</link><guid isPermaLink="false">https://gatsby-starter-blog-demo.netlify.com/new-blog/</guid><pubDate>Sun, 08 Sep 2019 11:00:00 GMT</pubDate><content:encoded>&lt;p&gt;I’ve put together a new blog with &lt;a href=&quot;https://www.gatsbyjs.org/&quot;&gt;Gatsby&lt;/a&gt;,
+which I’m quite happy with. I haven’t been able to spend as much time with
+React as I’d like until now and I’m enjoying being able to work with the
+library.&lt;/p&gt;
+&lt;p&gt;The &lt;a href=&quot;https://github.com/gatsbyjs/gatsby-starter-blog&quot;&gt;template&lt;/a&gt; I started with to create this blog featured
+as its first post a quote from Wikipedia on the topic of
+&lt;a href=&quot;http://en.wikipedia.org/wiki/Salted_duck_egg&quot;&gt;salted duck eggs&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I have, for no particular reason, left the quote intact.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;A salted duck egg is a Chinese preserved food product made by soaking duck
+eggs in brine, or packing each egg in damp, salted charcoal. In Asian
+supermarkets, these eggs are sometimes sold covered in a thick layer of salted
+charcoal paste. The eggs may also be sold with the salted paste removed,
+wrapped in plastic, and vacuum packed. From the salt curing process, the
+salted duck eggs have a briny aroma, a gelatin-like egg white and a
+firm-textured, round yolk that is bright orange-red in color.&lt;/p&gt;
+&lt;/blockquote&gt;</content:encoded></item></channel></rss>
