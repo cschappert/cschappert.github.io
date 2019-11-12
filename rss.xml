@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[work and nonwork]]></title><description><![CDATA[Musings on work, nonwork and gardening.]]></description><link>https://gatsby-starter-blog-demo.netlify.com</link><generator>GatsbyJS</generator><lastBuildDate>Tue, 12 Nov 2019 06:59:40 GMT</lastBuildDate><item><title><![CDATA[Getting Started with PureScript]]></title><description><![CDATA[Today I’m setting up a PureScript development environment and I’m taking the
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[work and nonwork]]></title><description><![CDATA[Musings on work, nonwork and gardening.]]></description><link>https://gatsby-starter-blog-demo.netlify.com</link><generator>GatsbyJS</generator><lastBuildDate>Tue, 12 Nov 2019 14:57:56 GMT</lastBuildDate><item><title><![CDATA[Getting Started with PureScript]]></title><description><![CDATA[Today I’m setting up a PureScript development environment and I’m taking the
 opportunity to write a quick getting started guide for…]]></description><link>https://gatsby-starter-blog-demo.netlify.com/get-started-with-purescript/</link><guid isPermaLink="false">https://gatsby-starter-blog-demo.netlify.com/get-started-with-purescript/</guid><pubDate>Tue, 12 Nov 2019 05:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Today I’m setting up a &lt;a href=&quot;http://www.purescript.org/&quot;&gt;PureScript&lt;/a&gt; development environment and I’m taking the
 opportunity to write a quick getting started guide for developers who do not yet
 even have a &lt;a href=&quot;https://nodejs.org/&quot;&gt;Node.js&lt;/a&gt; environment set up.&lt;/p&gt;
@@ -22,13 +22,11 @@ $ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; &lt;span class=
 user’s home directory as:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;I avoid polluting the global system and affecting other users&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;I avoid having to use &lt;code class=&quot;language-text&quot;&gt;sudo&lt;/code&gt; for an operation for which root privileges
-should not (in my opinion) be necessary.
-Therefore, if it does not exist, create the file &lt;code class=&quot;language-text&quot;&gt;~/.npmrc&lt;/code&gt; and add the following:&lt;/p&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;prefix=~/.npm-global&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/li&gt;
+&lt;li&gt;I avoid having to use &lt;code class=&quot;language-text&quot;&gt;sudo&lt;/code&gt; for an operation for which root privileges
+should not (in my opinion) be necessary.&lt;/li&gt;
 &lt;/ul&gt;
+&lt;p&gt;Therefore, if it does not exist, create the file &lt;code class=&quot;language-text&quot;&gt;~/.npmrc&lt;/code&gt; and add the following:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;prefix=~/.npm-global&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;All packages installed with &lt;code class=&quot;language-text&quot;&gt;npm install -g&lt;/code&gt; will now be installed under
 &lt;code class=&quot;language-text&quot;&gt;$HOME/.npm-global&lt;/code&gt; for the user.&lt;/p&gt;
 &lt;p&gt;(See &lt;a href=&quot;https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally&quot;&gt;here&lt;/a&gt; for official documentation.)&lt;/p&gt;
@@ -38,10 +36,8 @@ the path:&lt;/p&gt;
 &lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;# Change the path below to reflect the actual version of node that you installed&lt;/span&gt;
 &lt;span class=&quot;token builtin class-name&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;token assign-left variable&quot;&gt;&lt;span class=&quot;token environment constant&quot;&gt;PATH&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;/usr/local/lib/nodejs/node-v12.13.0-linux-x64/bin:&lt;span class=&quot;token environment constant&quot;&gt;$PATH&lt;/span&gt;
 &lt;span class=&quot;token builtin class-name&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;token assign-left variable&quot;&gt;&lt;span class=&quot;token environment constant&quot;&gt;PATH&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token environment constant&quot;&gt;$HOME&lt;/span&gt;/.npm-global/bin:&lt;span class=&quot;token environment constant&quot;&gt;$PATH&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;ul&gt;
-&lt;li&gt;Note: It is necessary to restart the terminal to get the above modification to the
-path into effect.&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; It is necessary to restart the terminal to get the above modification to the
+path into effect.&lt;/p&gt;
 &lt;h1&gt;Get PureScript&lt;/h1&gt;
 &lt;p&gt;The rest of the process is covered in the official PureScript docs &lt;a href=&quot;https://github.com/purescript/documentation/blob/master/guides/Getting-Started.md&quot;&gt;here&lt;/a&gt;, but here are my notes:&lt;/p&gt;
 &lt;h2&gt;Install the PureScript Compiler&lt;/h2&gt;
