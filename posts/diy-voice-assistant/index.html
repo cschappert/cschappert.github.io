@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html
+  lang="en-us"
+  dir="ltr"
+  data-theme="light"
+>
+<head>
+  <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="light">
+<title>Creating a DIY Voice Assistant: First Steps</title>
+
+
+  
+  
+    
+      
+        <link rel="stylesheet" href="/css/main.c502eafe680ecd4fe97c5684382481fd65c0c65c671b6cc85d320ca9c6a2c8cf.css" integrity="sha256-xQLq/mgOzU/pfFaEOCSB/WXAxlxnG2zIXTIMqcaiyM8=" crossorigin="anonymous">
+      
+    
+  
+
+<style>
+  img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  html {
+    overflow-y: scroll;
+  }
+</style>
+</head>
+<body style="min-height:100vh; display:flex; flex-direction:column;">
+  <div class="container" style="flex:1; display:flex; flex-direction:column;">
+    <header style="margin-top:2rem;">
+      <hgroup>
+  <h1><a href="/" style="text-decoration: none; color: inherit;">Christopher Schappert</a></h1>
+  <div style="display:flex; align-items:flex-end; justify-content:space-between;">
+    <p style="padding-left:0.12em; margin:0;"><i>find something new and stick with it</i></p>
+    <nav>
+      <a href="/about/" style="margin-right:1em;">About</a>
+      <a href="/contact/">Contact</a>
+    </nav>
+  </div>
+</hgroup>
+<hr />
+    </header>
+    <main style="flex:1;">
+      
+  <h2>Creating a DIY Voice Assistant: First Steps</h2>
+  <p>I&rsquo;ve been wanting to replace my Google and Amazon devices with a DIY voice assistant for a while.
+Now that I&rsquo;ve got something working, I&rsquo;d like to share how I did it.</p>
+<h3 id="first-some-background">First, some background</h3>
+<p>I don&rsquo;t actually make very heavy use of my Google Nest Mini, but it&rsquo;s extremely helpful when my hands
+are busy or I don&rsquo;t have enough time to grab a pen without distracting myself from what I&rsquo;m
+already doing.</p>
+<p>In practice, I use my Google Nest Mini to:</p>
+<ul>
+<li>Set kitchen timers while I&rsquo;m cooking</li>
+<li>Add things to my shopping list, again generally while I&rsquo;m cooking</li>
+<li>Quickly add tasks to my to-do list</li>
+<li>Quickly add reminders to my to-do list</li>
+<li>Control my Sonos speaker</li>
+</ul>
+<p>I would like my DIY voice assistant to be able to do all of these things. I&rsquo;ll define tasks as
+to-do list items that have no associated due dates or notifications. Reminders on the other hand will
+be to-do list items that do have due dates and generate reminder notifications. Everything else is
+hopefully self-explanatory.</p>
+<p>I use Todoist as my to-do list application. Sadly, integration with Google and Amazon products ended
+a long time ago. All the more reason to come up with my own solution!</p>
+<p>In addition to integrating with Todoist, I wanted something that I could run locally and that would respect
+my privacy. I also wanted to be able to change things I didn&rsquo;t like and add more features as I needed
+them. Lastly, I wanted a fun project to work on.</p>
+<h3 id="home-assistant">Home Assistant</h3>
+<p><a href="https://www.home-assistant.io">Home Assistant</a>(HA) is a popular open-source home automation platform that lets you control and automate smart devices from a single place. It runs locally (on your own hardware), giving you full privacy, flexibility, and control without relying on cloud services.</p>
+<p><a href="https://www.home-assistant.io/voice_control/">And it supports voice control</a>.</p>
+<p>As I will be integrating with Todoist, I will in fact be sharing some data with one specific cloud
+service, but I will be doing this intentionally and by choice.</p>
+<p>You can install and configure Home Assistant to control your smart devices and run various tasks in
+response to various cues. Then, you can set up a voice assistant to listen to and process your cues.</p>
+<h3 id="running-home-assistant">Running Home Assistant</h3>
+<p>There are effectively <a href="https://www.home-assistant.io/installation/">three recommended ways</a> to run Home Assistant:</p>
+<ol>
+<li>Install Home Assistant OS (HAOS) on a spare computer or a Raspberry Pi</li>
+<li>Install Home Assistant OS on a virtual machine using something like VirtualBox</li>
+<li>Run Home Assistant (<strong>not</strong> the full OS!) in a container using Docker or Docker Compose</li>
+</ol>
+<p>If you have a spare computer around, the simplest way to get a voice assistant pipeline going is probably to:</p>
+<ol>
+<li>Install HAOS on to your hardware</li>
+<li><a href="https://www.home-assistant.io/installation/">Install the various components</a> of the voice assist pipeline as HAOS add-ons</li>
+</ol>
+<p>Using the above methods everything should be simple and you can probably skim the rest of this post.</p>
+<h3 id="the-slightly-more-complicated-but-more-flexible-approach">The slightly more complicated, but more flexible approach</h3>
+<p><strong>Caveat</strong>: I am running the following on Linux and using Docker Engine. Home Assistant might not function
+properly running on Docker Desktop. I don&rsquo;t know.</p>
+<p>I don&rsquo;t have any spare hardware available at the moment and virtual machines run too slow for my taste.
+I&rsquo;ll be going with the third option and running HA in a container. If you too will be running HA in a container,
+you won&rsquo;t have the ability to install HA add-ons and you&rsquo;ll need to get a little bit more hands-on.</p>
+<p>I&rsquo;ll show you how.</p>
+<p>Official installation instructions are <a href="https://www.home-assistant.io/installation/">here</a>, but here&rsquo;s
+a quick summary:</p>
+<ol>
+<li>Create a new folder where Home Assistant will live</li>
+<li>Create the file <code>compose.yaml</code> in the above folder</li>
+<li>Edit <code>compose.yaml</code> to contain the following:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">services</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">homeassistant</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">homeassistant</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#e6db74">&#34;ghcr.io/home-assistant/home-assistant:stable&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">./config:/config</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">/etc/localtime:/etc/localtime:ro</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">/run/dbus:/run/dbus:ro</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">unless-stopped</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">network_mode</span>: <span style="color:#ae81ff">host</span>
+</span></span></code></pre></div><ol start="4">
+<li>In the directory containing <code>compose.yaml</code>, run the command <code>docker compose up</code></li>
+</ol>
+<p>No matter what you might hear, you should <strong>not</strong> need to run the container in privledged mode. And frankly,
+you probably shouldn&rsquo;t be giving <em>anything</em> elevated privledges that aren&rsquo;t required.</p>
+<ol start="5">
+<li>Open <a href="http://localhost:8123">http://localhost:8123</a> and you should be all set.</li>
+</ol>
+<p>If you&rsquo;re not sure where to start, take a look at the official <a href="https://www.home-assistant.io/getting-started/onboarding/">onboarding documentation</a>.</p>
+<h3 id="then-some-more-background">Then, some more background</h3>
+<p>As I&rsquo;ve said I won&rsquo;t be able to use add-ons so I&rsquo;ll have to blaze my own path. It&rsquo;s not that bad.</p>
+<p>A smart voice assistant consists of multiple distinct services. You&rsquo;ll need:</p>
+<ul>
+<li>A &ldquo;wake word&rdquo; service that can listen to an audio stream and determine whether what it is hearing is (A) the wake word or (B) not the wake word. Yes, this is basically &ldquo;Hotdog or Not Hotdog&rdquo;.</li>
+<li>A speech to text service that can understand what you are saying and transcribe it to text.</li>
+<li>Some &ldquo;brains&rdquo; to understand what your cue actually means and what should be done in response</li>
+<li>A text to speech service that can speak the brain&rsquo;s text response back to you</li>
+</ul>
+<p>I&rsquo;m counting three AI models so get your RAM out. I&rsquo;m running things quite well with about 3 GB available memory, an 8 year old Intel i7
+and without a dedicated GPU.</p>
+<p>You&rsquo;ll also need a mic and a speaker connected to a system running a service that allows for audio streaming.
+Home assistant calls this piece of hardware a <em>satellite</em> and so will I.</p>
+<p>The good news is that, as well as I understand, all of the voice assistant related Home Assistant add-ons
+are actually adaptations of various services from the also-well-worth-looking-into <a href="https://github.com/rhasspy">Rhasspy</a> project. You can download the services you need and just run them right on your workstation. If you download the Wyoming protocol compatible versions (and you should) Home Assistant will automatically detect all of the running services and from there it&rsquo;s just a few clicks.</p>
+<p>Some of these services require some half-decent hardware to run efficiently. Being able to run them anywhere you want (not just on the same hardware as Home Assistant) is
+a pretty good deal.</p>
+<h3 id="actually-doing-it">Actually doing it</h3>
+<p>To review, our end goal is a computer equiped with a microphone and speakers that has the following running:</p>
+<ol>
+<li>A &ldquo;satellite&rdquo; service (wyoming-satellite)</li>
+<li>A wakeword detector (OpenWakeWord)</li>
+<li>A Speech-to-Text service (Whisper)</li>
+<li>A &ldquo;brain&rdquo; (Home Assistant)</li>
+<li>A Text-to-Speech service (Piper)</li>
+</ol>
+<p>Since your computer has a microphone and speakers, it will function not just as the voice assistant service, but also as it&rsquo;s own satellite.</p>
+<p>You already have Home Assistant running in a container if you followed the above steps. Let&rsquo;s take care of the rest.</p>
+<p>Here are the GitHub repositories:</p>
+<ul>
+<li><a href="https://github.com/rhasspy/wyoming-satellite">wyoming-satellite</a></li>
+<li><a href="https://github.com/rhasspy/wyoming-openwakeword">wyoming-openwakeword</a></li>
+<li><a href="https://github.com/rhasspy/wyoming-faster-whisper">wyoming-faster-whisper</a></li>
+<li><a href="https://github.com/rhasspy/wyoming-piper">wyoming-piper</a></li>
+</ul>
+<p>I recommend creating a new <code>assist-pipeline</code> directory and cloning the above four repositories into it.
+If you follow my commands, some of the above four services will also be writing data into the <code>assist-pipeline</code>
+directory, so don&rsquo;t be too surprised when you see some new directories show up.</p>
+<h3 id="running-the-services">Running the services</h3>
+<p>The details are in the respective READMEs of the above repositories, but here&rsquo;s a quick start:</p>
+<h4 id="piper">Piper</h4>
+<p>Install / Setup</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># From directory `assist-pipeline`</span>
+</span></span><span style="display:flex;"><span>git clone https://github.com/rhasspy/wyoming-piper.git
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>cd wyoming-piper
+</span></span><span style="display:flex;"><span>script/setup
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>curl -L -s <span style="color:#e6db74">&#34;https://github.com/rhasspy/piper/releases/download/v1.2.0/piper_amd64.tar.gz&#34;</span> | tar -zxvf - -C ..
+</span></span></code></pre></div><p>Run</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>script/run --piper <span style="color:#e6db74">&#39;../piper/piper&#39;</span> --voice en_US-lessac-medium --uri <span style="color:#e6db74">&#39;tcp://0.0.0.0:10200&#39;</span> --data-dir ../piper-data --download-dir ../piper-data --noise-scale 0.667 --length-scale 1.0 --noise-w 0.333 --update-voices --streaming
+</span></span></code></pre></div><h4 id="whisper">Whisper</h4>
+<p>Install / Setup</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># From directory `assist-pipeline`</span>
+</span></span><span style="display:flex;"><span>git clone https://github.com/rhasspy/wyoming-faster-whisper.git
+</span></span><span style="display:flex;"><span>cd wyoming-faster-whisper
+</span></span><span style="display:flex;"><span>script/setup
+</span></span></code></pre></div><p>Run</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>script/run --model small --language en --uri <span style="color:#e6db74">&#39;tcp://0.0.0.0:10300&#39;</span> --data-dir ../wyoming-faster-whisper-data --download-dir ../wyoming-faster-whisper-data
+</span></span></code></pre></div><p>Note: Change the model to a larger model for better accuracy or a smaller model for better speed.</p>
+<h4 id="openwakeword">OpenWakeWord</h4>
+<p>Install / Setup</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># From directory `assist-pipeline`</span>
+</span></span><span style="display:flex;"><span>git clone https://github.com/rhasspy/wyoming-openwakeword.git
+</span></span><span style="display:flex;"><span>cd wyoming-openwakeword
+</span></span><span style="display:flex;"><span>script/setup
+</span></span></code></pre></div><p>Run</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>script/run   --uri <span style="color:#e6db74">&#39;tcp://0.0.0.0:10400&#39;</span>   --preload-model <span style="color:#e6db74">&#39;hey_rhasspy&#39;</span>
+</span></span></code></pre></div><p>Note: If <code>script/setup</code> fails, try using Python 3.9.19</p>
+<h4 id="satellite">Satellite</h4>
+<p>Instal / Setup</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># From directory `assist-pipeline`</span>
+</span></span><span style="display:flex;"><span>git clone https://github.com/rhasspy/wyoming-satellite.git
+</span></span><span style="display:flex;"><span>cd wyoming-satellite
+</span></span><span style="display:flex;"><span>script/setup
+</span></span><span style="display:flex;"><span>.venv/bin/pip3 install <span style="color:#e6db74">&#39;webrtc-noise-gain==1.2.3&#39;</span>
+</span></span></code></pre></div><p>Run</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>script/run   --name <span style="color:#e6db74">&#39;my satellite&#39;</span>   --uri <span style="color:#e6db74">&#39;tcp://0.0.0.0:10700&#39;</span>   --mic-command <span style="color:#e6db74">&#39;arecord -r 16000 -c 1 -f S16_LE -t raw&#39;</span>   --snd-command <span style="color:#e6db74">&#39;aplay -r 22050 -c 1 -f S16_LE -t raw&#39;</span>   --wake-uri <span style="color:#e6db74">&#39;tcp://127.0.0.1:10400&#39;</span>   --wake-word-name <span style="color:#e6db74">&#39;hey_rhasspy&#39;</span> --done-wav sounds/done.wav --timer-finished-wav sounds/timer_finished.wav --timer-finished-wav-repeat <span style="color:#ae81ff">8</span> <span style="color:#ae81ff">0</span> --mic-auto-gain <span style="color:#ae81ff">5</span> --mic-noise-suppression <span style="color:#ae81ff">2</span> --mic-no-mute-during-awake-wav
+</span></span></code></pre></div><p>Note: If you&rsquo;re getting errors see the official README. You may need to install a dependency such as package <code>alsa-utils</code>.</p>
+<h3 id="putting-it-all-together">Putting it all together</h3>
+<ol>
+<li>Restart HA (stop and start the container)</li>
+<li><a href="http://localhost:8123">Open HA in your browser</a></li>
+<li>Click <em>Settings</em> on the left</li>
+<li>Click <em>Devices &amp; Services</em></li>
+<li>For each of the four services, click <em>Add Integration</em> in the bottom right</li>
+<li>Add the service by host and port number</li>
+<li>Return to <em>Settings</em></li>
+<li>Click <em>Voice Assistants</em></li>
+<li>Under <em>Assist</em>, click <em>Home Assistant</em> to configure settings</li>
+<li>Set <em>Speech-to-text</em> to faster-whisper</li>
+<li>Set <em>Text-to-speech</em> to piper</li>
+<li>Click <em>Update</em> in the bottom right</li>
+</ol>
+<p>In regards to step 6, the host should be <code>127.0.0.1</code> and if you used my commands the respective ports are <code>10200</code>, <code>10300</code>, <code>10400</code> and <code>10700</code>.</p>
+<h3 id="trying-it-out">Trying it out</h3>
+<p>You should now be ready to go! Try this:</p>
+<ol>
+<li>Say &ldquo;Hey Rhasspy&rdquo;</li>
+<li>Wait about a half second</li>
+<li>Say &ldquo;What time is it?&rdquo;</li>
+</ol>
+<p>If you hear a chime and your assistant responds with the time, it&rsquo;s working!</p>
+<h3 id="next-steps">Next steps</h3>
+<ul>
+<li>Take a closer look at the official README files for all of the Rhasspy related repositories for customization options.</li>
+<li>Likewise, take a closer look at the <em>Voice Assistants</em> configuration dialog and find a voice you like.</li>
+</ul>
+<h3 id="up-next">Up next</h3>
+<p>In a future post, I&rsquo;ll be explaining how to integrate HA with Todoist.</p>
+<p><img src="/images/whisper_screen_shot_crop.jpg" alt=""></p>
+
+  <div style="text-align: center;">
+    <a href="/">Return to Home</a>
+  </div>
+
+    </main>
+    <footer style="text-align:center;">
+      <hr />
+<p><small>Copyright © Christopher Schappert 2025. All rights reserved. Made with <a href="https://gohugo.io">Hugo</a> and <a href="https://picocss.com">Pico</a>.</small></p>
+    </footer>
+  </div>
+</body>
+</html>
